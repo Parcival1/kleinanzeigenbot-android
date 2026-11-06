@@ -10,6 +10,8 @@ SCHRITT=0
 bild() { SCHRITT=$((SCHRITT + 1)); adb exec-out screencap -p > "rauchtest-$SCHRITT-$1.png" || true; }
 
 abzug() {
+    # Alten Abzug weg, sonst prüft warte() nach einem fehlgeschlagenen Dump den veralteten Stand.
+    rm -f ui.xml
     for _ in 1 2 3; do
         adb shell uiautomator dump /sdcard/ui.xml >/dev/null 2>&1 && adb pull /sdcard/ui.xml ui.xml >/dev/null 2>&1 && return 0
         sleep 1
@@ -32,7 +34,9 @@ warte() {
     echo "::error::Nicht gefunden: $1 $2"
     bild fehler
     cat ui.xml || true
-    adb logcat -d | grep -E "AndroidRuntime|$PKG" | tail -80 || true
+    adb logcat -d -b crash || true
+    adb logcat -d | grep -v -E "AccessibilityNodeInfoDumper|uiautomator|RuntimeInit|boot image|lock profiling|Shutting down VM" \
+        | grep -E "AndroidRuntime|$PKG|ActivityTaskManager|chromium" | tail -80 || true
     exit 1
 }
 
@@ -68,7 +72,27 @@ warte text "10.0.2.2:8106" 10
 adb shell input keyevent 66
 
 echo "== Weboberfläche geladen"
-warte text "Rauchtest-Seite" 90
+# Auf langsamen Emulatoren geht das Enter gelegentlich verloren (Feld leer oder Seite bleibt):
+# dann Adresse neu eintragen, Tastatur schließen und „Verbinden“ antippen.
+for versuch in 1 2 3; do
+    ende=$((SECONDS + 30)); geladen=0
+    while [ $SECONDS -lt $ende ]; do
+        if abzug && python3 "$HIER/finde.py" ui.xml text "Rauchtest-Seite" >/dev/null; then geladen=1; break; fi
+        sleep 2
+    done
+    [ $geladen = 1 ] && break
+    echo "Seite nicht geladen, verbinde erneut (Versuch $versuch)"
+    bild verbinden-$versuch
+    if abzug && XY="$(python3 "$HIER/finde.py" ui.xml id "$PKG:id/eingabe")"; then
+        tippe; sleep 1
+        python3 "$HIER/finde.py" ui.xml text "10.0.2.2:8106" >/dev/null || adb shell input text "10.0.2.2:8106"
+        sleep 1
+        adb shell input keyevent 111   # Escape: Tastatur weg, damit der Knopf frei liegt
+        sleep 1
+        warte id "$PKG:id/verbinden" 10; tippe
+    fi
+done
+warte text "Rauchtest-Seite" 60
 bild seite
 
 echo "== Foto-Feld öffnet die eigene Kamera"

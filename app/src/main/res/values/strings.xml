@@ -4,19 +4,19 @@
     <string name="laedt">Lädt …</string>
 
     <string name="fehler_titel">Server nicht erreichbar</string>
-    <string name="fehler_text">Keine Verbindung zu %1$s.\n\nBist du im WLAN? Die Inventar-Oberfläche ist nur im eigenen Netz erreichbar.</string>
+    <string name="fehler_text">Keine Verbindung zu %1$s.\n\nBist du im WLAN? Der KleinanzeigenBot ist nur im eigenen Netz erreichbar.</string>
     <string name="erneut">Erneut versuchen</string>
     <string name="adresse_aendern">Serveradresse ändern</string>
 
     <string name="einstellungen">Einstellungen</string>
     <string name="willkommen">Willkommen</string>
-    <string name="willkommen_text">Gib die Adresse deines Inventar-Servers ein, so wie du sie im Browser aufrufst – zum Beispiel 192.168.1.20:8106.</string>
+    <string name="willkommen_text">Gib die Adresse deines KleinanzeigenBot-Servers ein, so wie du sie im Browser aufrufst – zum Beispiel 192.168.1.20:8127.</string>
     <string name="serveradresse">Serveradresse</string>
-    <string name="serveradresse_hinweis">192.168.1.20:8106</string>
+    <string name="serveradresse_hinweis">192.168.1.20:8127</string>
     <string name="verbinden">Verbinden</string>
     <string name="pruefe">Prüfe Verbindung …</string>
     <string name="adresse_ungueltig">Das sieht nicht nach einer Adresse aus.</string>
-    <string name="adresse_keine_antwort">Unter %1$s antwortet kein Inventar-Server. Stimmt die Adresse und bist du im WLAN?</string>
+    <string name="adresse_keine_antwort">Unter %1$s antwortet kein KleinanzeigenBot-Server. Stimmt die Adresse und bist du im WLAN?</string>
     <string name="trotzdem_speichern">Trotzdem speichern</string>
     <string name="abbrechen">Abbrechen</string>
     <string name="app_bereich">App</string>
@@ -75,6 +75,6 @@
     <string name="kamera_fehler">Die Kamera konnte nicht gestartet werden.</string>
     <string name="foto_fehler">Das Foto konnte nicht gespeichert werden.</string>
 
-    <string name="drucken_titel">Inventar-Etiketten</string>
+    <string name="drucken_titel">KleinanzeigenBot-Etiketten</string>
     <string name="kein_browser">Keine App zum Öffnen dieses Links gefunden.</string>
 </resources>
