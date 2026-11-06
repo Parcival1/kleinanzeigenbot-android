@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Der Inventar-Server läuft im eigenen Netz meist ohne HTTPS. Die App lädt
+     nur Seiten dieses Servers; alles andere öffnet der Browser. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

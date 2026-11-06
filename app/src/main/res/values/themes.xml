@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Inventar" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/hintergrund</item>
+        <item name="android:colorPrimary">@color/akzent</item>
+        <item name="android:colorAccent">@color/akzent</item>
+        <item name="android:textColorPrimary">@color/text</item>
+        <item name="android:textColorSecondary">@color/text_leise</item>
+    </style>
+
+    <style name="Theme.Inventar.Kamera" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:colorAccent">@color/akzent</item>
+    </style>
+</resources>

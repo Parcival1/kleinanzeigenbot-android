@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="kopf">#0C0A09</color>
+    <color name="leiste">#1C1917</color>
+    <color name="hintergrund">#0C0A09</color>
+    <color name="text">#F5F5F4</color>
+    <color name="text_leise">#A8A29E</color>
+    <color name="akzent">#10B981</color>
+    <color name="feld">#1C1917</color>
+    <color name="rand">#44403C</color>
+    <color name="fehler">#F87171</color>
+</resources>

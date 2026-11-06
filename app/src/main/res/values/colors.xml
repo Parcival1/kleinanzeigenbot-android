@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Farben der Weboberfläche (Tailwind stone/emerald, warme Grautöne seit 05.11.2026) -->
+    <color name="kopf">#1C1917</color>
+    <color name="leiste">#FFFFFF</color>
+    <color name="hintergrund">#FAFAF9</color>
+    <color name="text">#1C1917</color>
+    <color name="text_leise">#78716C</color>
+    <color name="akzent">#059669</color>
+    <color name="feld">#FFFFFF</color>
+    <color name="rand">#D6D3D1</color>
+    <color name="fehler">#B91C1C</color>
+</resources>

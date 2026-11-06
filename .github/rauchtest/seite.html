@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="de">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rauchtest</title>
+<body style="font-family: sans-serif; margin: 16px">
+<h1>Rauchtest-Seite</h1>
+<!-- wie in der Inventar-Oberfläche (items/form.html) -->
+<label style="display: block; padding: 32px; font-size: 24px; text-align: center; background: #059669; color: #fff; border-radius: 8px">
+  Foto aufnehmen
+  <input id="feld" type="file" accept="image/*" capture="environment" multiple style="display: none">
+</label>
+<p id="stand" style="font-size: 22px">Dateien: 0</p>
+<!-- wie der Scannen-Knopf im Kopf der Inventar-Oberfläche -->
+<button type="button" onclick="window.InventarApp.scannen()" style="padding: 20px; font-size: 22px">Etikett scannen</button>
+<div style="height: 1200px"></div>
+<script>
+  var feld = document.getElementById("feld"), stand = document.getElementById("stand");
+  feld.addEventListener("change", function () {
+    var daten = new FormData();
+    for (var i = 0; i < feld.files.length; i++) daten.append("file", feld.files[i]);
+    stand.textContent = "Dateien: " + feld.files.length + " lädt";
+    fetch("/upload", { method: "POST", body: daten })
+      .then(function (r) { return r.text(); })
+      .then(function (t) { stand.textContent = "Dateien: " + feld.files.length + " hochgeladen " + t; });
+  });
+</script>
+</body>
+</html>

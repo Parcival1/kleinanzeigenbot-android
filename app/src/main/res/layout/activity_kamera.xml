@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/vorschau"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <View
+        android:id="@+id/fokus"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:alpha="0"
+        android:background="@drawable/fokus_ring" />
+
+    <!-- kurzes Aufblitzen als Rückmeldung beim Auslösen -->
+    <View
+        android:id="@+id/blende"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0"
+        android:background="#FFFFFF" />
+
+    <LinearLayout
+        android:id="@+id/hinweis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="28dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/hinweis_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.15"
+            android:text="@string/kamera_erlaubnis_fehlt"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/hinweis_knopf"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/fertig_knopf"
+            android:paddingHorizontal="20dp"
+            android:text="@string/app_einstellungen_oeffnen"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <!-- oben: schließen, Zähler, Blitz -->
+    <LinearLayout
+        android:id="@+id/oben"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="#66000000"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="6dp">
+
+        <ImageButton
+            android:id="@+id/schliessen"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="@drawable/rund_knopf"
+            android:contentDescription="@string/kamera_schliessen"
+            android:src="@drawable/ic_schliessen" />
+
+        <TextView
+            android:id="@+id/zaehler"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:accessibilityLiveRegion="polite"
+            android:gravity="center"
+            android:text="@string/keine_fotos"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/blitz"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:background="@drawable/rund_knopf"
+            android:contentDescription="@string/blitz_auto"
+            android:src="@drawable/ic_blitz_auto" />
+    </LinearLayout>
+
+    <!-- unten: Vorschaubilder, Galerie, Auslöser, Fertig – alles mit dem Daumen erreichbar -->
+    <LinearLayout
+        android:id="@+id/unten"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#99000000"
+        android:orientation="vertical"
+        android:paddingTop="8dp"
+        android:paddingBottom="12dp">
+
+        <HorizontalScrollView
+            android:id="@+id/leiste_rahmen"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:paddingHorizontal="8dp"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:id="@+id/leiste"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/tipp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="4dp"
+            android:text="@string/kamera_tipp"
+            android:textColor="#CCFFFFFF"
+            android:textSize="12sp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:paddingHorizontal="16dp">
+
+            <ImageButton
+                android:id="@+id/galerie"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="start|center_vertical"
+                android:background="@drawable/rund_knopf"
+                android:contentDescription="@string/galerie"
+                android:src="@drawable/ic_galerie" />
+
+            <ImageButton
+                android:id="@+id/ausloeser"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ausloeser"
+                android:contentDescription="@string/ausloeser" />
+
+            <Button
+                android:id="@+id/fertig"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                android:layout_gravity="end|center_vertical"
+                android:background="@drawable/fertig_knopf"
+                android:enabled="false"
+                android:minWidth="96dp"
+                android:paddingHorizontal="14dp"
+                android:text="@string/fertig"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+    </LinearLayout>
+</FrameLayout>

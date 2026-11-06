@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- app_name kommt aus marke.properties. Apostrophe immer als \' schreiben. -->
+    <string name="laedt">Lädt …</string>
+
+    <string name="fehler_titel">Server nicht erreichbar</string>
+    <string name="fehler_text">Keine Verbindung zu %1$s.\n\nBist du im WLAN? Die Inventar-Oberfläche ist nur im eigenen Netz erreichbar.</string>
+    <string name="erneut">Erneut versuchen</string>
+    <string name="adresse_aendern">Serveradresse ändern</string>
+
+    <string name="einstellungen">Einstellungen</string>
+    <string name="willkommen">Willkommen</string>
+    <string name="willkommen_text">Gib die Adresse deines Inventar-Servers ein, so wie du sie im Browser aufrufst – zum Beispiel 192.168.1.20:8106.</string>
+    <string name="serveradresse">Serveradresse</string>
+    <string name="serveradresse_hinweis">192.168.1.20:8106</string>
+    <string name="verbinden">Verbinden</string>
+    <string name="pruefe">Prüfe Verbindung …</string>
+    <string name="adresse_ungueltig">Das sieht nicht nach einer Adresse aus.</string>
+    <string name="adresse_keine_antwort">Unter %1$s antwortet kein Inventar-Server. Stimmt die Adresse und bist du im WLAN?</string>
+    <string name="trotzdem_speichern">Trotzdem speichern</string>
+    <string name="abbrechen">Abbrechen</string>
+    <string name="app_bereich">App</string>
+    <string name="version_text">Version %1$s</string>
+    <string name="updates_suchen">Nach Updates suchen</string>
+    <string name="was_ist_neu">Was ist neu</string>
+    <string name="quelle">Quelle und Updates: github.com/%1$s</string>
+
+    <string name="update_titel">Update verfügbar</string>
+    <string name="update_text">Version %1$s ist da (installiert: %2$s).</string>
+    <string name="update_jetzt">Jetzt aktualisieren</string>
+    <string name="update_spaeter">Später</string>
+    <string name="update_laedt">Update wird geladen …</string>
+    <string name="update_fehler">Das Update konnte nicht geladen werden. Bitte später noch einmal versuchen.</string>
+    <string name="update_aktuell">Die App ist auf dem neuesten Stand (Version %1$s).</string>
+    <string name="update_keine_verbindung">Keine Verbindung zu GitHub – Updates konnten nicht geprüft werden.</string>
+    <string name="erlaubnis_titel">Einmalige Erlaubnis</string>
+    <string name="erlaubnis_text">Damit sich die App selbst aktualisieren kann, braucht sie die Erlaubnis „Unbekannte Apps installieren“.\n\nIm nächsten Fenster den Schalter einschalten und dann zurückkehren – das Update geht danach von selbst weiter.</string>
+    <string name="weiter">Weiter</string>
+    <string name="erlaubnis_fehlt">Ohne die Erlaubnis kann das Update nicht installiert werden.</string>
+    <string name="neu_titel">Neu in Version %1$s</string>
+    <string name="ok">OK</string>
+
+    <string name="kamera_schliessen">Kamera schließen</string>
+    <string name="ausloeser">Foto aufnehmen</string>
+    <string name="galerie">Aus der Galerie wählen</string>
+    <string name="fertig">Fertig</string>
+    <string name="fertig_anzahl">Fertig (%1$d)</string>
+    <string name="fotos_anzahl">%1$d Fotos</string>
+    <string name="foto_eins">1 Foto</string>
+    <string name="keine_fotos">Noch keine Fotos</string>
+    <string name="kamera_tipp">Tippen: scharfstellen · Zwei Finger: zoomen</string>
+    <string name="blitz_auto">Blitz: automatisch</string>
+    <string name="blitz_an">Blitz: an</string>
+    <string name="blitz_aus">Blitz: aus</string>
+    <string name="foto_verwerfen">Dieses Foto verwerfen?</string>
+    <string name="verwerfen">Verwerfen</string>
+    <string name="behalten">Behalten</string>
+    <string name="fotos_uebernehmen_titel">Fotos übernehmen?</string>
+    <string name="fotos_uebernehmen_text">Du hast %1$d Foto(s) aufgenommen.</string>
+    <string name="uebernehmen">Übernehmen</string>
+    <string name="alle_verwerfen">Alle verwerfen</string>
+    <string name="kamera_erlaubnis_fehlt">Die App darf die Kamera nicht benutzen. Du kannst das in den Android-Einstellungen erlauben oder Fotos aus der Galerie wählen.</string>
+    <string name="app_einstellungen_oeffnen">Android-Einstellungen öffnen</string>
+    <string name="scan_titel">Etikett scannen</string>
+    <string name="scan_suchen_titel">Artikel suchen</string>
+    <string name="suchen_hinweis">Etiketten nacheinander in den Rahmen halten</string>
+    <string name="suchen_falsch">Nicht der gesuchte Artikel</string>
+    <string name="suchen_falsch_text">Das ist %1$s · gesucht: %2$s</string>
+    <string name="scan_hinweis">Barcode des Etiketts in den Rahmen halten</string>
+    <string name="scan_lampe">Lampe</string>
+    <string name="scan_eintippen">Nummer eintippen</string>
+    <string name="scan_eintippen_titel">Inventarnummer</string>
+    <string name="scan_oeffnen">Öffnen</string>
+    <string name="scan_erlaubnis_fehlt">Zum Scannen braucht die App die Kamera. Du kannst das in den Android-Einstellungen erlauben oder die Nummer eintippen.</string>
+    <string name="kamera_fehler">Die Kamera konnte nicht gestartet werden.</string>
+    <string name="foto_fehler">Das Foto konnte nicht gespeichert werden.</string>
+
+    <string name="drucken_titel">Inventar-Etiketten</string>
+    <string name="kein_browser">Keine App zum Öffnen dieses Links gefunden.</string>
+</resources>
