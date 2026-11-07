@@ -157,6 +157,8 @@ class MainActivity : ComponentActivity() {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
+    private val anmeldung = Anmeldung()
+
     private fun webEinrichten() {
         with(web.settings) {
             javaScriptEnabled = true
@@ -171,8 +173,9 @@ class MainActivity : ComponentActivity() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 val ziel = request.url.toString()
                 val server = speicher.server ?: return false
-                if (ServerAdresse.gehoertZu(server, ziel)) return false
-                // Fremde Seiten (z. B. die Anzeige auf kleinanzeigen.de) im Browser öffnen.
+                if (anmeldung.inAppLaden(server, ziel)) return false
+                // Fremde Seiten (z. B. die Anzeige auf kleinanzeigen.de) im Browser öffnen,
+                // außer dem Anbieter während einer zentralen Anmeldung (Authentik).
                 extern(request.url)
                 return true
             }
@@ -183,6 +186,7 @@ class MainActivity : ComponentActivity() {
             }
 
             override fun onPageFinished(view: WebView, url: String?) {
+                speicher.server?.let { server -> url?.let { anmeldung.geladen(server, it) } }
                 fortschritt.visibility = View.GONE
                 wischen.isRefreshing = false
                 if (!fehlerBeimLaden) {

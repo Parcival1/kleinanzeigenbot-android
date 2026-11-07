@@ -1,5 +1,12 @@
 [
   {
+    "version": "1.1",
+    "datum": "2026-11-07",
+    "punkte": [
+      "Anmeldung mit Authentik: Der Knopf „Mit Authentik anmelden“ bleibt jetzt in der App, statt in den Browser zu springen. Das lokale Konto geht weiter wie bisher."
+    ]
+  },
+  {
     "version": "1.0",
     "datum": "2026-11-06",
     "punkte": [
