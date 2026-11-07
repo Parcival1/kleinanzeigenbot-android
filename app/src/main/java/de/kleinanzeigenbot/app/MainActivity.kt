@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
 
     private val scanner = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { ergebnis ->
         val code = ScannerActivity.code(ergebnis.resultCode, ergebnis.data) ?: return@registerForActivityResult
-        val server = speicher.server ?: return@registerForActivityResult
+        val server = speicher.server
         web.loadUrl("$server/scan?code=" + URLEncoder.encode(code, "UTF-8"))
     }
 
@@ -79,10 +79,6 @@ class MainActivity : ComponentActivity() {
         web.evaluateJavascript("window.inventarGescannt && window.inventarGescannt($wert);", null)
     }
 
-    private val einstellungen = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        // Erster Start ohne Adresse und zurück gedrückt: App schließen statt leerer Seite.
-        if (speicher.server == null) finish()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,15 +110,12 @@ class MainActivity : ComponentActivity() {
         }
 
         findViewById<Button>(R.id.erneut).setOnClickListener { neuLaden() }
-        findViewById<Button>(R.id.adresse).setOnClickListener { einstellungenOeffnen(erststart = false) }
         onBackPressedDispatcher.addCallback(this, zurueck)
 
         webEinrichten()
 
         val server = speicher.server
-        if (server == null) {
-            einstellungenOeffnen(erststart = true)
-        } else if (savedInstanceState != null && web.restoreState(savedInstanceState) != null) {
+        if (savedInstanceState != null && web.restoreState(savedInstanceState) != null) {
             geladenerServer = server
         } else {
             laden(server)
@@ -133,9 +126,8 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         web.onResume()
-        // Adresse in den Einstellungen geändert -> neu verbinden.
         val server = speicher.server
-        if (server != null && server != geladenerServer) laden(server)
+        if (server != geladenerServer) laden(server)
         aktualisierung.beimOeffnen()
     }
 
@@ -172,7 +164,7 @@ class MainActivity : ComponentActivity() {
         web.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
                 val ziel = request.url.toString()
-                val server = speicher.server ?: return false
+                val server = speicher.server
                 if (anmeldung.inAppLaden(server, ziel)) return false
                 // Fremde Seiten (z. B. die Anzeige auf kleinanzeigen.de) im Browser öffnen,
                 // außer dem Anbieter während einer zentralen Anmeldung (Authentik).
@@ -186,7 +178,7 @@ class MainActivity : ComponentActivity() {
             }
 
             override fun onPageFinished(view: WebView, url: String?) {
-                speicher.server?.let { server -> url?.let { anmeldung.geladen(server, it) } }
+                url?.let { anmeldung.geladen(speicher.server, it) }
                 fortschritt.visibility = View.GONE
                 wischen.isRefreshing = false
                 if (!fehlerBeimLaden) {
@@ -201,7 +193,7 @@ class MainActivity : ComponentActivity() {
                 if (!request.isForMainFrame) return
                 fehlerBeimLaden = true
                 wischen.isRefreshing = false
-                fehlerText.text = getString(R.string.fehler_text, speicher.server ?: "")
+                fehlerText.text = getString(R.string.fehler_text, speicher.server)
                 web.visibility = View.INVISIBLE
                 fehler.visibility = View.VISIBLE
             }
@@ -248,14 +240,13 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun neuLaden() {
-        val server = speicher.server ?: return
+        val server = speicher.server
         val aktuell = web.url
         if (aktuell != null && ServerAdresse.gehoertZu(server, aktuell)) web.reload() else laden(server)
     }
 
-    fun einstellungenOeffnen(erststart: Boolean) {
-        einstellungen.launch(Intent(this, EinstellungenActivity::class.java)
-            .putExtra(EinstellungenActivity.ERSTSTART, erststart))
+    fun einstellungenOeffnen() {
+        startActivity(Intent(this, EinstellungenActivity::class.java))
     }
 
     private fun drucken() {
@@ -289,7 +280,7 @@ class MainActivity : ComponentActivity() {
         fun drucken() = runOnUiThread { this@MainActivity.drucken() }
 
         @JavascriptInterface
-        fun einstellungen() = runOnUiThread { einstellungenOeffnen(erststart = false) }
+        fun einstellungen() = runOnUiThread { einstellungenOeffnen() }
 
         @JavascriptInterface
         fun scannen() = runOnUiThread { scanner.launch(Intent(this@MainActivity, ScannerActivity::class.java)) }

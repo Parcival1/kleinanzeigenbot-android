@@ -6,9 +6,8 @@ import android.content.Context
 class Speicher(context: Context) {
     private val prefs = context.applicationContext.getSharedPreferences("inventar", Context.MODE_PRIVATE)
 
-    var server: String?
-        get() = prefs.getString("server", null)
-        set(wert) = prefs.edit().putString("server", wert).apply()
+    /** Fest eingebaut (marke.properties SERVER); eine früher eingegebene Adresse gilt nicht mehr. */
+    val server: String get() = BuildConfig.SERVER
 
     var blitz: Int
         get() = prefs.getInt("blitz", 0)

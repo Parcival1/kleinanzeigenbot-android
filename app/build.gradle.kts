@@ -31,6 +31,9 @@ android {
         targetSdk = 35
         versionCode = versionCodeOf(appVersion)
         versionName = appVersion
+        // Fester Server; nur der Rauchtest baut mit -PserverAdresse=http://10.0.2.2:8106 gegen seinen Testserver.
+        val server = (project.findProperty("serverAdresse") as String?) ?: marke.getProperty("SERVER")
+        buildConfigField("String", "SERVER", "\"$server\"")
         resValue("string", "app_name", marke.getProperty("APP_NAME"))
     }
 

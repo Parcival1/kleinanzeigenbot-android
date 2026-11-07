@@ -1,5 +1,5 @@
 #!/bin/bash
-# Rauchtest im Emulator: erster Start, Serveradresse, Weboberfläche,
+# Rauchtest im Emulator: erster Start mit festem Server (Testbau gegen 10.0.2.2:8106), Weboberfläche,
 # eigene Kamera, ein Foto aufnehmen, Upload kommt beim Server an.
 set -euo pipefail
 APK="$1"
@@ -55,43 +55,7 @@ adb shell pm grant "$PKG" android.permission.CAMERA
 adb logcat -c
 adb shell am start -W -n "$PKG/de.kleinanzeigenbot.app.MainActivity"
 
-echo "== erster Start: Willkommen und Serveradresse"
-warte text "Willkommen" 90
-bild willkommen
-# Die Emulator-Tastatur verschluckt die erste Eingabe gelegentlich: prüfen und wiederholen.
-for versuch in 1 2 3; do
-    warte id "$PKG:id/eingabe"; tippe
-    sleep 2
-    adb shell input text "10.0.2.2:8106"
-    sleep 1
-    abzug && python3 "$HIER/finde.py" ui.xml text "10.0.2.2:8106" >/dev/null && break
-    echo "Eingabe nicht angekommen (Versuch $versuch)"
-done
-warte text "10.0.2.2:8106" 10
-# Enter statt Knopf: die Tastatur verdeckt/verschiebt „Verbinden“ im Emulator.
-adb shell input keyevent 66
-
-echo "== Weboberfläche geladen"
-# Auf langsamen Emulatoren geht das Enter gelegentlich verloren (Feld leer oder Seite bleibt):
-# dann Adresse neu eintragen, Tastatur schließen und „Verbinden“ antippen.
-for versuch in 1 2 3; do
-    ende=$((SECONDS + 30)); geladen=0
-    while [ $SECONDS -lt $ende ]; do
-        if abzug && python3 "$HIER/finde.py" ui.xml text "Rauchtest-Seite" >/dev/null; then geladen=1; break; fi
-        sleep 2
-    done
-    [ $geladen = 1 ] && break
-    echo "Seite nicht geladen, verbinde erneut (Versuch $versuch)"
-    bild verbinden-$versuch
-    if abzug && XY="$(python3 "$HIER/finde.py" ui.xml id "$PKG:id/eingabe")"; then
-        tippe; sleep 1
-        python3 "$HIER/finde.py" ui.xml text "10.0.2.2:8106" >/dev/null || adb shell input text "10.0.2.2:8106"
-        sleep 1
-        adb shell input keyevent 111   # Escape: Tastatur weg, damit der Knopf frei liegt
-        sleep 1
-        warte id "$PKG:id/verbinden" 10; tippe
-    fi
-done
+echo "== Weboberfläche geladen (Server fest eingebaut, keine Adresse einzugeben)"
 warte text "Rauchtest-Seite" 60
 bild seite
 
@@ -132,7 +96,7 @@ sleep 3
 bild scanner
 tippe
 warte id "android:id/button1" 30
-# Wie bei der Serveradresse: Feld antippen, tippen, prüfen, ggf. wiederholen.
+# Feld antippen, tippen, prüfen, ggf. wiederholen (die Emulator-Tastatur verschluckt manchmal Eingaben).
 for versuch in 1 2 3; do
     warte text "I-00012" 10; tippe          # Platzhalter des leeren Felds
     sleep 2

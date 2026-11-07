@@ -22,60 +22,22 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/willkommen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:lineSpacingMultiplier="1.15"
-            android:text="@string/willkommen_text"
-            android:textColor="@color/text_leise"
-            android:textSize="15sp" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:labelFor="@+id/eingabe"
             android:text="@string/serveradresse"
             android:textColor="@color/text"
             android:textSize="14sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/eingabe"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="6dp"
-            android:autofillHints="url"
-            android:background="@drawable/eingabe"
-            android:hint="@string/serveradresse_hinweis"
-            android:imeOptions="actionGo"
-            android:importantForAutofill="no"
-            android:inputType="textUri"
-            android:paddingHorizontal="14dp"
-            android:singleLine="true"
-            android:textColor="@color/text"
-            android:textColorHint="@color/text_leise"
-            android:textSize="17sp" />
-
+        <!-- Fest eingebaut (marke.properties SERVER), nicht änderbar. -->
         <TextView
-            android:id="@+id/meldung"
+            android:id="@+id/server_anzeige"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/fehler"
-            android:textSize="14sp"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/verbinden"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/knopf"
-            android:text="@string/verbinden"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/text_leise"
+            android:textIsSelectable="true"
             android:textSize="16sp" />
 
         <LinearLayout

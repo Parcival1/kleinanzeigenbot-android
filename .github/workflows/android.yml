@@ -67,7 +67,15 @@ jobs:
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
-        run: gradle --no-daemon -PappVersion=${{ steps.version.outputs.version }} assembleRelease
+        run: |
+          V="${{ steps.version.outputs.version }}"
+          # Erst der Testbau gegen den Rauchtest-Server (einziger Unterschied: SERVER), dann der echte.
+          if [ "${{ github.event_name }}" != pull_request ]; then
+            gradle --no-daemon -PappVersion=$V -PserverAdresse=http://10.0.2.2:8106 assembleRelease
+            cp app/build/outputs/apk/release/app-release.apk "$RUNNER_TEMP/rauchtest-app.apk"
+            gradle --no-daemon clean
+          fi
+          gradle --no-daemon -PappVersion=$V assembleRelease
 
       - name: APK umbenennen und Signatur prüfen
         run: |
@@ -88,6 +96,13 @@ jobs:
         with:
           name: kleinanzeigenbot-apk
           path: kleinanzeigenbot-*.apk
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v4
+        if: github.event_name != 'pull_request'
+        with:
+          name: rauchtest-apk
+          path: ${{ runner.temp }}/rauchtest-app.apk
           if-no-files-found: error
 
       - name: Release als Entwurf anlegen
@@ -114,7 +129,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: kleinanzeigenbot-apk
+          name: rauchtest-apk
 
       - name: KVM freischalten
         run: |
@@ -131,7 +146,7 @@ jobs:
           profile: pixel_4
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -no-snapshot -camera-back emulated
-          script: bash .github/rauchtest/rauchtest.sh "$(ls kleinanzeigenbot-*.apk)"
+          script: bash .github/rauchtest/rauchtest.sh rauchtest-app.apk
 
       - uses: actions/upload-artifact@v4
         if: always()

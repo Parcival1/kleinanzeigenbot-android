@@ -71,7 +71,7 @@ class Aktualisierung(private val activity: Activity) {
     }
 
     private fun neuestesRelease(): Release? {
-        val server = speicher.server ?: throw IllegalStateException("kein Server")
+        val server = speicher.server
         val verbindung = URL("$server/app/android/version.json").openConnection() as HttpURLConnection
         verbindung.connectTimeout = 10_000
         verbindung.readTimeout = 15_000
