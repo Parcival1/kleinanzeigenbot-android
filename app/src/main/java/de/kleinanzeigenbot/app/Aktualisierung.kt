@@ -14,16 +14,18 @@ import androidx.core.content.FileProvider
 import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
+import java.security.MessageDigest
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.concurrent.thread
 
 /**
- * Update-Suche über die GitHub-Releases von [BuildConfig.UPDATE_REPO].
+ * Update-Suche beim eigenen KleinanzeigenBot-Server (`/app/android/version.json`), nicht bei GitHub.
  *
  * Beim Öffnen und bei jeder Rückkehr in die App (höchstens einmal pro Minute)
  * wird nachgesehen; „Später“ blendet dieselbe Version 4 Stunden aus. Die APK
- * wird in den Cache geladen und über den Paketinstaller als Update über die
- * bestehende App installiert (gleiches Paket, gleiche Signatur).
+ * wird in den Cache geladen, gegen die SHA-256 des Servers geprüft und über den
+ * Paketinstaller als Update über die bestehende App installiert (gleiches Paket,
+ * gleiche Signatur – eine fremd signierte APK lehnt Android ohnehin ab).
  */
 class Aktualisierung(private val activity: Activity) {
 
@@ -69,15 +71,17 @@ class Aktualisierung(private val activity: Activity) {
     }
 
     private fun neuestesRelease(): Release? {
-        val verbindung = URL("https://api.github.com/repos/${BuildConfig.UPDATE_REPO}/releases?per_page=20")
-            .openConnection() as HttpURLConnection
+        val server = speicher.server ?: throw IllegalStateException("kein Server")
+        val verbindung = URL("$server/app/android/version.json").openConnection() as HttpURLConnection
         verbindung.connectTimeout = 10_000
         verbindung.readTimeout = 15_000
-        verbindung.setRequestProperty("Accept", "application/vnd.github+json")
-        verbindung.setRequestProperty("User-Agent", "Inventar-App/${BuildConfig.VERSION_NAME}")
+        verbindung.setRequestProperty("Accept", "application/json")
+        verbindung.setRequestProperty("User-Agent", "KleinanzeigenBot-App/${BuildConfig.VERSION_NAME}")
         try {
+            // 404: Auf dem Server liegt (noch) keine App – kein Fehler, nur kein Update.
+            if (verbindung.responseCode == 404) return null
             if (verbindung.responseCode != 200) throw IllegalStateException("HTTP ${verbindung.responseCode}")
-            return Releases.auswaehlen(verbindung.inputStream.bufferedReader().use { it.readText() })
+            return Releases.auswaehlen(verbindung.inputStream.bufferedReader().use { it.readText() }, server)
         } finally {
             verbindung.disconnect()
         }
@@ -117,7 +121,8 @@ class Aktualisierung(private val activity: Activity) {
             val ergebnis = runCatching {
                 ordner.mkdirs()
                 ordner.listFiles()?.forEach { it.delete() }
-                val ziel = File(ordner, "inventar-${release.version}.apk")
+                val ziel = File(ordner, "kleinanzeigenbot-${release.version}.apk")
+                val pruefsumme = MessageDigest.getInstance("SHA-256")
                 val verbindung = URL(release.apkUrl).openConnection() as HttpURLConnection
                 verbindung.connectTimeout = 15_000
                 verbindung.readTimeout = 30_000
@@ -135,6 +140,7 @@ class Aktualisierung(private val activity: Activity) {
                                 val n = ein.read(puffer)
                                 if (n < 0) break
                                 aus.write(puffer, 0, n)
+                                pruefsumme.update(puffer, 0, n)
                                 geladen += n
                                 val p = if (gesamt > 0) (geladen * 100 / gesamt).toInt() else 0
                                 if (p != zuletzt) {
@@ -150,6 +156,8 @@ class Aktualisierung(private val activity: Activity) {
                 // Abgebrochener oder verfälschter Download: nicht installieren.
                 if (release.groesse > 0 && ziel.length() != release.groesse) throw IllegalStateException("Größe")
                 if (ziel.length() < 100_000) throw IllegalStateException("zu klein")
+                val ist = pruefsumme.digest().joinToString("") { "%02x".format(it) }
+                if (ist != release.sha256) throw IllegalStateException("Prüfsumme")
                 ziel
             }
             activity.runOnUiThread {

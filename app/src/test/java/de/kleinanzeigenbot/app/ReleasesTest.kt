@@ -5,21 +5,23 @@ import org.junit.Assert.assertNull
 import org.junit.Test
 
 class ReleasesTest {
-    private fun release(tag: String, draft: Boolean, apk: Boolean = true) = """
-        {"tag_name": "$tag", "draft": $draft, "prerelease": false, "html_url": "https://github.com/x/y/releases/$tag",
-         "assets": [${if (apk) """{"name": "inventar-$tag.apk", "size": 4000000, "browser_download_url": "https://dl/$tag.apk"}""" else ""}]}
-    """
+    private val server = "http://192.168.30.15:8127"
+    private val sha = "a".repeat(64)
 
-    @Test fun neuestesVeroeffentlichtes() {
-        val json = "[${release("v1.2", draft = true)}, ${release("v1.10", draft = false)}, ${release("v1.9", draft = false)}]"
-        val r = Releases.auswaehlen(json)!!
-        assertEquals("1.10", r.version)
-        assertEquals("https://dl/v1.10.apk", r.apkUrl)
+    @Test fun angebotDesServers() {
+        val json = """{"version": "1.2", "apk": "/app/android/kleinanzeigenbot-1.2.apk", "groesse": 4000000, "sha256": "$sha"}"""
+        val r = Releases.auswaehlen(json, server)!!
+        assertEquals("1.2", r.version)
+        assertEquals("$server/app/android/kleinanzeigenbot-1.2.apk", r.apkUrl)
         assertEquals(4000000L, r.groesse)
+        assertEquals(sha, r.sha256)
     }
 
-    @Test fun entwuerfeUndOhneApkZaehlenNicht() {
-        val json = "[${release("v2.0", draft = true)}, ${release("v1.5", draft = false, apk = false)}]"
-        assertNull(Releases.auswaehlen(json))
+    @Test fun fremdeAdressenUndUnvollstaendigesZaehlenNicht() {
+        assertNull(Releases.auswaehlen("""{"version": "1.2", "apk": "https://boese.example/x.apk", "sha256": "$sha"}""", server))
+        assertNull(Releases.auswaehlen("""{"version": "1.2", "apk": "//boese.example/x.apk", "sha256": "$sha"}""", server))
+        assertNull(Releases.auswaehlen("""{"version": "1.2", "apk": "/app/android/x.apk"}""", server))
+        assertNull(Releases.auswaehlen("""{"apk": "/app/android/x.apk", "sha256": "$sha"}""", server))
+        assertNull(Releases.auswaehlen("kein json", server))
     }
 }

@@ -23,7 +23,7 @@
     <string name="version_text">Version %1$s</string>
     <string name="updates_suchen">Nach Updates suchen</string>
     <string name="was_ist_neu">Was ist neu</string>
-    <string name="quelle">Quelle und Updates: github.com/%1$s</string>
+    <string name="quelle">Updates kommen vom eigenen KleinanzeigenBot-Server.</string>
 
     <string name="update_titel">Update verfügbar</string>
     <string name="update_text">Version %1$s ist da (installiert: %2$s).</string>

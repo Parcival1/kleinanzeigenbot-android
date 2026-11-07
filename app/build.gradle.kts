@@ -31,7 +31,6 @@ android {
         targetSdk = 35
         versionCode = versionCodeOf(appVersion)
         versionName = appVersion
-        buildConfigField("String", "UPDATE_REPO", "\"${marke.getProperty("UPDATE_REPO")}\"")
         resValue("string", "app_name", marke.getProperty("APP_NAME"))
     }
 

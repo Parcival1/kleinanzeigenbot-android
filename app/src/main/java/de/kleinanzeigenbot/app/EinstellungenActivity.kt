@@ -62,7 +62,7 @@ class EinstellungenActivity : ComponentActivity() {
         verbinden.setOnClickListener { pruefenUndSpeichern() }
 
         findViewById<TextView>(R.id.version).text = getString(R.string.version_text, BuildConfig.VERSION_NAME)
-        findViewById<TextView>(R.id.quelle).text = getString(R.string.quelle, BuildConfig.UPDATE_REPO)
+        findViewById<TextView>(R.id.quelle).text = getString(R.string.quelle)
         findViewById<View>(R.id.updates).setOnClickListener { aktualisierung.pruefen(vonHand = true) }
         findViewById<View>(R.id.neuigkeiten).setOnClickListener { NeuigkeitenAnzeige.aktuelle(this) }
 
